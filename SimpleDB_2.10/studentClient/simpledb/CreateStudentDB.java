@@ -34,7 +34,7 @@ public class CreateStudentDB {
 						}
 						System.out.println("");
 					}
-					qry = scan.nextLine();
+					
 					rs.close();
 				} else{
 					stmt.executeUpdate(qry.trim());
@@ -42,6 +42,7 @@ public class CreateStudentDB {
 					
 					// rs.close();
 				}
+				qry = scan.nextLine();
 			}
 
 		}
