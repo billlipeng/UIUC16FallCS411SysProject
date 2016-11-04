@@ -1,6 +1,7 @@
 package simpledb.planner;
 
-import java.util.Iterator;
+//import java.util.Iterator;
+import java.util.*;
 import simpledb.server.SimpleDB;
 import simpledb.tx.Transaction;
 import simpledb.parse.*;
@@ -11,6 +12,8 @@ import simpledb.query.*;
  * @author sciore
  */
 public class BasicUpdatePlanner implements UpdatePlanner {
+
+
    
    public int executeDelete(DeleteData data, Transaction tx) {
       Plan p = new TablePlan(data.tableName(), tx);
@@ -53,7 +56,17 @@ public class BasicUpdatePlanner implements UpdatePlanner {
    }
    
    public int executeCreateTable(CreateTableData data, Transaction tx) {
+      for(String fldname : data.newSchema().fields()){
+         if(data.newSchema().length(fldname)==-1){
+            String s="insert into TABLE1(GId, GName) values (1, '"+fldname+"')";
+            Parser p=new Parser(s);
+            executeInsert(p.insert(), tx);
+            System.out.println("Insert GRAPH successfully.");
+            break;
+         }
+      }
       SimpleDB.mdMgr().createTable(data.tableName(), data.newSchema(), tx);
+      System.out.println("Insert GRAPH successfully.");
       return 0;
    }
    
