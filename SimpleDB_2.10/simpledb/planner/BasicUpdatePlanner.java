@@ -13,7 +13,7 @@ import simpledb.query.*;
  */
 public class BasicUpdatePlanner implements UpdatePlanner {
 
-
+   private static Integer id = 0;
    
    public int executeDelete(DeleteData data, Transaction tx) {
       Plan p = new TablePlan(data.tableName(), tx);
@@ -58,7 +58,8 @@ public class BasicUpdatePlanner implements UpdatePlanner {
    public int executeCreateTable(CreateTableData data, Transaction tx) {
       for(String fldname : data.newSchema().fields()){
          if(data.newSchema().length(fldname)==-1){
-            String s="insert into TABLE1(GId, GName) values (1, '"+fldname+"')";
+
+            String s="insert into TABLE1(GId, GName) values (2, '"+fldname+"')";
             Parser p=new Parser(s);
             executeInsert(p.insert(), tx);
             System.out.println("Insert GRAPH successfully.");

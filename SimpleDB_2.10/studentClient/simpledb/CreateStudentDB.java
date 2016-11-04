@@ -18,13 +18,12 @@ public class CreateStudentDB {
 //			stmt.executeUpdate(s3);
 //			System.out.println("Table GRAPH created.");
 
-			String s = "create table TB(Id int, BB graph)";
-			stmt.executeUpdate(s);
-			System.out.println("Table TB created.");
+//			String s = "create table TB(Id int, BB graph)";
+//			stmt.executeUpdate(s);
+//			System.out.println("Table TB created.");
 
-			String qry = "select GName "
-					+ "from table1 "
-					+ "where gid = 1 ";
+			String qry = "select GId "
+					+ "from table1 ";
 			ResultSet rs = stmt.executeQuery(qry);
 
 			// Step 3: loop through the result set
