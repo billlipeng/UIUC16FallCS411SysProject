@@ -53,6 +53,14 @@ public class Schema {
    public void addStringField(String fldname, int length) {
       addField(fldname, VARCHAR, length);
    }
+
+   /**
+    * Adds an graph field to the schema.
+    * @param fldname the name of the field
+    */
+   public void addGraphField(String fldname) {
+      addField(fldname, INTEGER, -1);
+   }
    
    /**
     * Adds a field to the schema having the same
