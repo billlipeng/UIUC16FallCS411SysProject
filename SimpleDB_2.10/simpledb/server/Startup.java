@@ -14,7 +14,7 @@ public class Startup {
       l.add("node2,node4;6");
       List<String> output = new ArrayList<>();
       shortPath s = new shortPath();
-      output = s.shortPath(l);
+      output = s.shortPath(l,"node1","node4");
       for(String str : output){
          System.out.println(str);
       }
