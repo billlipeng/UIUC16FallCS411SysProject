@@ -11,28 +11,39 @@ public class Test {
             Statement stmt = conn.createStatement();
 
 //			String s1 = "create table TABLE1(GId int, GName varchar(20))";
-//			String s2 = "create table TABLE2(NId int, NName varchar(20))";
-//			String s3 = "create table TABLE3(EId int, N1 varchar(20), N2 varchar(20), Length int)";
+//			String s2 = "create table TABLE2(GName varchar(20), NName varchar(20))";
+//			String s3 = "create table TABLE3(GName varchar(20), N1 varchar(20), N2 varchar(20), Length int)";
 //			stmt.executeUpdate(s1);
 //			stmt.executeUpdate(s2);
 //			stmt.executeUpdate(s3);
 //			System.out.println("Table GRAPH created.");
+////
+//            String s = "create table TC(Id int, DD graph)";
+//            stmt.executeUpdate(s);
+//            System.out.println("Table TC created.");
 
-            String s = "create table TB(Id int, DD graph)";
-            stmt.executeUpdate(s);
-            System.out.println("Table TB created.");
-
-            String qry = "select gname, gid "
-                    + "from table1 ";
+//            String inserts="insert into table3(Gname, n1, n2, length) values ('downtown', 'majista', 'sitara', 10)";
+            String inserts = "insert into TC(Id, DD) values (15, GRAPH (NAME ('UIUC'), " +
+                    "NODE ('siebel'; 'craving'; 'grainger'), " +
+                    "EDGE ('craving'->'grainger', 100; 'siebel'->'craving', 150)))";
+            //String inserts = "insert into TC(id, DD) values (15, 'UIUC')";
+            stmt.executeUpdate(inserts);
+//
+            System.out.println("Insert successful.");
+            String qry = "select gname, n1, n2, length "
+                    + "from table3 ";
             ResultSet rs = stmt.executeQuery(qry);
 
             // Step 3: loop through the result set
             while (rs.next()) {
-                String sname = rs.getString("gname");
-                int gid=rs.getInt("gid");
-                System.out.println(gid+" "+sname);
+                String gname = rs.getString("gname");
+                String n1 = rs.getString("n1");
+                String n2 = rs.getString("n2");
+                int l = rs.getInt("length");
+                System.out.println(gname+ " "+n1+" "+n2+" "+l);
             }
             rs.close();
+            System.out.println("Query successful.");
 
 //			String s = "create table STUDENT(SId int, SName varchar(10), MajorId int, GradYear int)";
 //			stmt.executeUpdate(s);

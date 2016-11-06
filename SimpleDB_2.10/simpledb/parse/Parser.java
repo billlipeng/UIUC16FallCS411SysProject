@@ -134,9 +134,121 @@ public class Parser {
       lex.eatDelim(')');
       lex.eatKeyword("values");
       lex.eatDelim('(');
-      List<Constant> vals = constList();
+
+      List<Constant> nd = new ArrayList<Constant>();
+      List<Constant> nd1 = new ArrayList<Constant>();
+      List<Constant> nd2 = new ArrayList<Constant>();
+      List<Constant> length = new ArrayList<Constant>();
+      List<Constant> sname = new ArrayList<Constant>();
+      List<Constant> vals = new ArrayList<Constant>();
+      if (lex.matchKeyword("graph")){
+         lex.eatKeyword("graph");
+         lex.eatDelim('(');
+         lex.eatKeyword("name");
+         lex.eatDelim('(');
+         Constant c = constant();
+         sname.add(c);
+         vals.add(c);
+         lex.eatDelim(')');
+         if(lex.matchDelim(',')){
+            lex.eatDelim(',');
+         }
+         if(lex.matchKeyword("node")){
+            lex.eatKeyword("node");
+            lex.eatDelim('(');
+            nd.addAll(constList(';'));
+            lex.eatDelim(')');
+            if(lex.matchDelim(',')){
+               lex.eatDelim(',');
+            }
+         }
+
+         if(lex.matchKeyword("edge")){
+            lex.eatKeyword("edge");
+            lex.eatDelim('(');
+
+            nd1.add(constant());
+            lex.eatDelim('-');
+            lex.eatDelim('>');
+            nd2.add(constant());
+            lex.eatDelim(',');
+            length.add(constant());
+            while(lex.matchDelim(';')){
+               lex.eatDelim(';');
+               nd1.add(constant());
+               lex.eatDelim('-');
+               lex.eatDelim('>');
+               nd2.add(constant());
+               lex.eatDelim(',');
+               length.add(constant());
+            }
+            lex.eatDelim(')');
+         }
+         lex.eatDelim(')');
+      }
+      else {
+         vals.add(constant());
+      }
+
+      //lex.nextToken();
+      //lex.eatDelim('(');
+      //vals.add(constant());
+      //lex.eatDelim(')');
+      while(lex.matchDelim(',')){
+         lex.eatDelim(',');
+         //vals.add(constant());
+         if (lex.matchKeyword("graph")){
+            lex.eatKeyword("graph");
+            lex.eatDelim('(');
+            lex.eatKeyword("name");
+            lex.eatDelim('(');
+            Constant d = constant();
+            sname.add(d);
+            vals.add(d);
+            lex.eatDelim(')');
+            if(lex.matchDelim(',')){
+               lex.eatDelim(',');
+            }
+            if(lex.matchKeyword("node")){
+               lex.eatKeyword("node");
+               lex.eatDelim('(');
+               nd.addAll(constList(';'));
+               lex.eatDelim(')');
+               if(lex.matchDelim(',')){
+                  lex.eatDelim(',');
+               }
+            }
+
+            if(lex.matchKeyword("edge")){
+               lex.eatKeyword("edge");
+               lex.eatDelim('(');
+               nd1.add(constant());
+               lex.eatDelim('-');
+               lex.eatDelim('>');
+               nd2.add(constant());
+               lex.eatDelim(',');
+               length.add(constant());
+               while(lex.matchDelim(';')){
+                  lex.eatDelim(';');
+                  nd1.add(constant());
+                  lex.eatDelim('-');
+                  lex.eatDelim('>');
+                  nd2.add(constant());
+                  lex.eatDelim(',');
+                  length.add(constant());
+               }
+               lex.eatDelim(')');
+            }
+            lex.eatDelim(')');
+         }
+         else {
+            vals.add(constant());
+         }
+      }
+
+      //List<Constant> vals = constList(',');
       lex.eatDelim(')');
-      return new InsertData(tblname, flds, vals);
+      return new InsertData(tblname, flds, vals, sname, nd, nd1, nd2, length);
    }
    
    private List<String> fieldList() {
@@ -149,12 +261,13 @@ public class Parser {
       return L;
    }
    
-   private List<Constant> constList() {
+   private List<Constant> constList(char note) {
       List<Constant> L = new ArrayList<Constant>();
-      L.add(constant());
-      if (lex.matchDelim(',')) {
-         lex.eatDelim(',');
-         L.addAll(constList());
+      Constant c=constant();
+      L.add(c);
+      if (lex.matchDelim(note)) {
+         lex.eatDelim(note);
+         L.addAll(constList(note));
       }
       return L;
    }
@@ -218,7 +331,7 @@ public class Parser {
       }
       else{
          lex.eatKeyword("graph");
-         schema.addGraphField(fldname);
+         schema.addStringField(fldname, 20);
       }
       return schema;
    }

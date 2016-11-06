@@ -58,9 +58,9 @@ public class Schema {
     * Adds an graph field to the schema.
     * @param fldname the name of the field
     */
-   public void addGraphField(String fldname) {
-      addField(fldname, INTEGER, -1);
-   }
+//   public void addGraphField(String fldname) {
+//      addField(fldname, VARCHAR, 225);
+//   }
    
    /**
     * Adds a field to the schema having the same
