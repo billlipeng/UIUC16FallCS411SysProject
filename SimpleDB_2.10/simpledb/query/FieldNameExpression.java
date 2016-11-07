@@ -56,6 +56,7 @@ public class FieldNameExpression implements Expression {
     * @see simpledb.query.Expression#evaluate(simpledb.query.Scan)
     */
    public Constant evaluate(Scan s) {
+      System.out.println("field: " + fldname);
       return s.getVal(fldname);
    }
    

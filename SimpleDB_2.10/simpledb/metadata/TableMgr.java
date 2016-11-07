@@ -20,7 +20,7 @@ public class TableMgr {
     */
    public static final int MAX_NAME = 16;
    
-   private TableInfo tcatInfo, fcatInfo;
+   private TableInfo tcatInfo, fcatInfo, graphInfo, nodeInfo, edgeInfo;
    
    /**
     * Creates a new catalog manager for the database system.
@@ -34,7 +34,26 @@ public class TableMgr {
       tcatSchema.addStringField("tblname", MAX_NAME);
       tcatSchema.addIntField("reclength");
       tcatInfo = new TableInfo("tblcat", tcatSchema);
-      
+  
+      Schema graphSchema = new Schema();
+      graphSchema.addIntField("GId");
+      graphSchema.addStringField("GName", MAX_NAME);
+      graphSchema.addIntField("NCount");
+      graphSchema.addIntField("ECount");
+      graphInfo = new TableInfo("graphcat", graphSchema);
+  
+      Schema nodeSchema = new Schema();
+      nodeSchema.addIntField("NId");
+      nodeSchema.addStringField("NName", MAX_NAME);
+      nodeInfo = new TableInfo("nodecat", nodeSchema);
+       
+      Schema edgeSchema = new Schema();
+      edgeSchema.addIntField("EId");
+      edgeSchema.addStringField("Ndeparture", MAX_NAME);
+      edgeSchema.addStringField("Ndestination", MAX_NAME);
+      edgeSchema.addIntField("Length");
+      edgeInfo = new TableInfo("edgecat", edgeSchema);
+  
       Schema fcatSchema = new Schema();
       fcatSchema.addStringField("tblname", MAX_NAME);
       fcatSchema.addStringField("fldname", MAX_NAME);
@@ -46,6 +65,9 @@ public class TableMgr {
       if (isNew) {
          createTable("tblcat", tcatSchema, tx);
          createTable("fldcat", fcatSchema, tx);
+         createTable("graphcat", graphSchema, tx);
+         createTable("nodecat", nodeSchema, tx);
+         createTable("edgecat", edgeSchema, tx);
       }
    }
    

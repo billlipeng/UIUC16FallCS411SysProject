@@ -67,8 +67,43 @@ public class RecordPage {
     * @return the string stored in that field
     */
    public String getString(String fldname) {
-      int position = fieldpos(fldname);
-      return tx.getString(blk, position);
+       if(fldname.contains("()")) {
+           /*
+           Driver d = new SimpleDriver();
+           conn = d.connect("jdbc:simpledb://localhost", null);
+           Statement stmt = conn.createStatement();
+           */
+           System.out.println("76");
+           System.out.println(fldname);
+           String gname = fldname.split("\\.")[0];
+           if(fldname.contains(".shortestPath()")) {
+               //get shortest path goes here
+               String n = "001";
+               return n;
+           }
+           else if(fldname.contains(".nodeCount()")) {
+               //stmt.executeQuery(qry);
+               
+               String n = "002";
+               return n;
+           }
+           else if(fldname.contains(".node()")) {
+               String n = "003";
+               return n;
+           }
+           else if(fldname.contains(".name()"))  {
+               String n = "004";
+               return n;
+           }
+           else {
+               String n = "005";
+               return n;
+           }
+       }
+        else {
+           int position = fieldpos(fldname);
+           return tx.getString(blk, position);
+        }
    }
    
    /**
