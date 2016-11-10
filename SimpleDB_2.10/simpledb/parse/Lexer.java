@@ -17,8 +17,35 @@ public class Lexer {
     */
    public Lexer(String s) {
       initKeywords();
+       /*
+       tok = new StreamTokenizer(new StringReader(s));
+       tok.wordChars('.', '.');
+       tok.wordChars('(', '(');
+       tok.wordChars(')', ')');
+       tok.lowerCaseMode(true); //ids and keywords are converted
+       boolean eof=false;
+       while(!eof) {
+           System.out.println("part: " + tok.sval);
+           try{
+               int token = tok.nextToken();
+               if (tok.sval == null) {
+                   eof = true;
+               }
+           }
+           catch(IOException e) {
+               
+           }
+       }
+       */
       tok = new StreamTokenizer(new StringReader(s));
+       /*
       tok.ordinaryChar('.');
+      tok.ordinaryChar('(');
+      tok.ordinaryChar(')');
+        */
+      tok.wordChars('.', '.');
+      tok.wordChars('(', '(');
+      tok.wordChars(')', ')');
       tok.lowerCaseMode(true); //ids and keywords are converted
       nextToken();
    }
@@ -57,6 +84,10 @@ public class Lexer {
     * @return true if that keyword is the current token
     */
    public boolean matchKeyword(String w) {
+       /*
+       System.out.println("line: " + tok.lineno());
+       System.out.println("type: " + tok.ttype);
+       System.out.println("val: " + tok.sval);*/
       return tok.ttype == StreamTokenizer.TT_WORD && tok.sval.equals(w);
    }
    
@@ -65,6 +96,10 @@ public class Lexer {
     * @return true if the current token is an identifier
     */
    public boolean matchId() {
+       /*
+       System.out.println("line: " + tok.lineno());
+       System.out.println("type: " + tok.ttype);
+       System.out.println("val: " + tok.sval);*/
       return  tok.ttype==StreamTokenizer.TT_WORD && !keywords.contains(tok.sval);
    }
    
