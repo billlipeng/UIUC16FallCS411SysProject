@@ -110,7 +110,7 @@ public class Schema {
     * @return the integer type of the field
     */
    public int type(String fldname) {
-       if(fldname.contains("()")) {
+       if(fldname.contains("-")) {
            return 12;
        }
        else {
@@ -126,7 +126,7 @@ public class Schema {
     * @return the conceptual length of the field
     */
    public int length(String fldname) {
-      if(fldname.contains("()")) {
+      if(fldname.contains("-")) {
           return 16;
       }
       return info.get(fldname).length;
