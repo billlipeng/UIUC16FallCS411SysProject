@@ -76,22 +76,22 @@ public class RecordPage {
            System.out.println("76");
            System.out.println(fldname);
            String gname = fldname.split("\\.")[0];
-           if(fldname.contains(".shortestPath()")) {
+           if(fldname.contains("- shortestPath")) {
                //get shortest path goes here
                String n = "001";
                return n;
            }
-           else if(fldname.contains(".nodeCount()")) {
+           else if(fldname.contains("-nodeCount")) {
                //stmt.executeQuery(qry);
                
                String n = "002";
                return n;
            }
-           else if(fldname.contains(".node()")) {
+           else if(fldname.contains("-node")) {
                String n = "003";
                return n;
            }
-           else if(fldname.contains(".name()"))  {
+           else if(fldname.contains("-name"))  {
                String n = "004";
                return n;
            }
