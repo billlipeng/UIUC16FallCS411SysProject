@@ -43,14 +43,14 @@ public class TableMgr {
       graphInfo = new TableInfo("graphcat", graphSchema);
   
       Schema nodeSchema = new Schema();
-      nodeSchema.addIntField("NId");
+      nodeSchema.addStringField("GName", MAX_NAME);
       nodeSchema.addStringField("NName", MAX_NAME);
       nodeInfo = new TableInfo("nodecat", nodeSchema);
        
       Schema edgeSchema = new Schema();
-      edgeSchema.addIntField("EId");
-      edgeSchema.addStringField("Ndeparture", MAX_NAME);
-      edgeSchema.addStringField("Ndestination", MAX_NAME);
+      edgeSchema.addStringField("GName", MAX_NAME);
+      edgeSchema.addStringField("N1", MAX_NAME);
+      edgeSchema.addStringField("N2", MAX_NAME);
       edgeSchema.addIntField("Length");
       edgeInfo = new TableInfo("edgecat", edgeSchema);
   
@@ -65,9 +65,9 @@ public class TableMgr {
       if (isNew) {
          createTable("tblcat", tcatSchema, tx);
          createTable("fldcat", fcatSchema, tx);
-         createTable("graphcat", graphSchema, tx);
-         createTable("nodecat", nodeSchema, tx);
-         createTable("edgecat", edgeSchema, tx);
+         createTable("table1", graphSchema, tx);
+         createTable("table2", nodeSchema, tx);
+         createTable("table3", edgeSchema, tx);
       }
    }
    
