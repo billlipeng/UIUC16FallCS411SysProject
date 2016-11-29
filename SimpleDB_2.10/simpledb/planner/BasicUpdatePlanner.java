@@ -1,7 +1,6 @@
 package simpledb.planner;
 
-//import java.util.Iterator;
-import java.util.*;
+import java.util.Iterator;
 import simpledb.server.SimpleDB;
 import simpledb.tx.Transaction;
 import simpledb.parse.*;
@@ -12,8 +11,6 @@ import simpledb.query.*;
  * @author sciore
  */
 public class BasicUpdatePlanner implements UpdatePlanner {
-
-   private static Integer id = 0;
    
    public int executeDelete(DeleteData data, Transaction tx) {
       Plan p = new TablePlan(data.tableName(), tx);
@@ -54,30 +51,9 @@ public class BasicUpdatePlanner implements UpdatePlanner {
       us.close();
       return 1;
    }
-
+   
    public int executeCreateTable(CreateTableData data, Transaction tx) {
-      for(String fldname : data.newSchema().fields()){
-         if(data.newSchema().length(fldname)==-1){
-            String qry="select gid from table1 ";
-            Parser q=new Parser(qry);
-            Plan pl=new BasicQueryPlanner().createPlan(q.query(),tx);
-            Scan sc=pl.open();
-            int tmp=0;
-            while (sc.next()) {
-               int gid=sc.getInt("gid");
-               if(gid>tmp) tmp=gid;
-            }
-            sc.close();
-            tmp++;
-            String s="insert into TABLE1(GId, GName) values (" + Integer.toString(tmp) + ", '"+fldname+"')";
-            Parser p=new Parser(s);
-            executeInsert(p.insert(), tx);
-            System.out.println("Insert GRAPH successfully.");
-            break;
-         }
-      }
       SimpleDB.mdMgr().createTable(data.tableName(), data.newSchema(), tx);
-      System.out.println("Insert GRAPH successfully.");
       return 0;
    }
    

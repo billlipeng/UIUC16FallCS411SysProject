@@ -56,7 +56,6 @@ public class ConstantExpression implements Expression {
     * @see simpledb.query.Expression#evaluate(simpledb.query.Scan)
     */
    public Constant evaluate(Scan s) {
-      System.out.println("constant: " + val.toString());
       return val;
    }
    

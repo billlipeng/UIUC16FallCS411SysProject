@@ -53,14 +53,6 @@ public class Schema {
    public void addStringField(String fldname, int length) {
       addField(fldname, VARCHAR, length);
    }
-
-   /**
-    * Adds an graph field to the schema.
-    * @param fldname the name of the field
-    */
-   public void addGraphField(String fldname) {
-      addField(fldname, INTEGER, -1);
-   }
    
    /**
     * Adds a field to the schema having the same
@@ -110,12 +102,7 @@ public class Schema {
     * @return the integer type of the field
     */
    public int type(String fldname) {
-       if(fldname.contains("-")) {
-           return 12;
-       }
-       else {
-           return info.get(fldname).type;
-       }
+      return info.get(fldname).type;
    }
    
    /**
@@ -126,9 +113,6 @@ public class Schema {
     * @return the conceptual length of the field
     */
    public int length(String fldname) {
-      if(fldname.contains("-")) {
-          return 16;
-      }
       return info.get(fldname).length;
    }
    

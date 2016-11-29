@@ -208,17 +208,12 @@ public class Parser {
          lex.eatKeyword("int");
          schema.addIntField(fldname);
       }
-      else if (lex.matchKeyword("varchar")) {
+      else {
          lex.eatKeyword("varchar");
-         //lex.eatKeyword("graph");
          lex.eatDelim('(');
          int strLen = lex.eatIntConstant();
          lex.eatDelim(')');
          schema.addStringField(fldname, strLen);
-      }
-      else{
-         lex.eatKeyword("graph");
-         schema.addGraphField(fldname);
       }
       return schema;
    }
