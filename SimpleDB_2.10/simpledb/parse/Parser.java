@@ -331,7 +331,7 @@ public class Parser {
       }
       else{
          lex.eatKeyword("graph");
-         schema.addStringField(fldname, 20);
+         schema.addStringField("_GRAPH_"+fldname, 27);
       }
       return schema;
    }

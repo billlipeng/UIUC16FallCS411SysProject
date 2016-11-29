@@ -77,10 +77,14 @@ public class TableScan implements UpdateScan {
     * @see simpledb.query.UpdateScan#setVal(java.lang.String, simpledb.query.Constant)
     */ 
    public void setVal(String fldname, Constant val) {
+      if (!hasField(fldname)) {
+         fldname = "_GRAPH_" + fldname;
+      }
       if (sch.type(fldname) == INTEGER)
          rf.setInt(fldname, (Integer)val.asJavaVal());
-      else
+      else{
          rf.setString(fldname, (String)val.asJavaVal());
+      }
    }
    
    public void setInt(String fldname, int val) {
