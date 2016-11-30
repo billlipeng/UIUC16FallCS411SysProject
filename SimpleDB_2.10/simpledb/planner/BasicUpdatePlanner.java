@@ -45,13 +45,6 @@ public class BasicUpdatePlanner implements UpdatePlanner {
             us.close();
             return count;
         }
-
-//      while(us.next()) {
-//         us.delete();
-//         count++;
-//      }
-//      us.close();
-//      return count;
     }
 
     public int executeModify(ModifyData data, Transaction tx) {
@@ -59,13 +52,80 @@ public class BasicUpdatePlanner implements UpdatePlanner {
         p = new SelectPlan(p, data.pred());
         UpdateScan us = (UpdateScan) p.open();
         int count = 0;
-        while(us.next()) {
-            Constant val = data.newValue().evaluate(us);
-            us.setVal(data.targetField(), val);
-            count++;
+        if(data.getOperation() ==0){
+            while(us.next()) {
+                Constant val = data.newValue().evaluate(us);
+                us.setVal(data.targetField(), val);
+                count++;
+            }
+            us.close();
+            return count;
         }
-        us.close();
-        return count;
+        else if (data.getOperation() ==1){
+            if(data.getisNode()){
+                while(us.next()) {
+                    String gname = us.getString(data.targetField());
+                    for (Constant tmp : data.getNd()){
+                        String nname = (String)tmp.asJavaVal();
+                        String s ="insert into table2 (gname, nname) values ('" + gname + "', '" + nname + "')";
+                        Parser par=new Parser(s);
+                        executeInsert(par.insert(), tx);
+                    }
+                    count++;
+                }
+                us.close();
+                return count;
+            }
+            else {
+                while(us.next()) {
+                    String gname = us.getString(data.targetField());
+                    for (int i =0; i<data.getLth().size();++i){
+                        String n1 = (String)data.getNd1().get(i).asJavaVal();
+                        String n2 = (String)data.getNd2().get(i).asJavaVal();
+                        int length = (int)data.getLth().get(i).asJavaVal();
+                        String s = "insert into table3 (gname, n1, n2, length) values ('"
+                                + gname + "', '" + n1 + "', '" + n2 + "', " + String.valueOf(length) + ")";
+                        Parser par=new Parser(s);
+                        executeInsert(par.insert(), tx);
+                    }
+                    count++;
+                }
+                us.close();
+                return count;
+            }
+        }
+        else {
+            if(data.getisNode()){
+                while(us.next()) {
+                    String gname = us.getString(data.targetField());
+                    for (Constant tmp : data.getNd()){
+                        String nname = (String)tmp.asJavaVal();
+                        String s ="delete from table2 where gname = '" + gname + "' and nname = '" + nname + "'";
+                        Parser par=new Parser(s);
+                        executeDelete(par.delete(), tx);
+                    }
+                    count++;
+                }
+                us.close();
+                return count;
+            }
+            else {
+                while(us.next()) {
+                    String gname = us.getString(data.targetField());
+                    for (int i =0; i<data.getNd1().size();++i){
+                        String n1 = (String)data.getNd1().get(i).asJavaVal();
+                        String n2 = (String)data.getNd2().get(i).asJavaVal();
+                        String s = "delete from table3 where gname = '" +
+                                gname +"' and n1 = '" + n1 +"' and n2 = '" + n2 + "'";
+                        Parser par=new Parser(s);
+                        executeDelete(par.delete(), tx);
+                    }
+                    count++;
+                }
+                us.close();
+                return count;
+            }
+        }
     }
 
     public int executeInsert(InsertData data, Transaction tx) {

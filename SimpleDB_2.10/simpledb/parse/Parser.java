@@ -279,14 +279,109 @@ public class Parser {
       String tblname = lex.eatId();
       lex.eatKeyword("set");
       String fldname = field();
-      lex.eatDelim('=');
-      Expression newval = expression();
-      Predicate pred = new Predicate();
-      if (lex.matchKeyword("where")) {
-         lex.eatKeyword("where");
-         pred = predicate();
+      if (lex.matchDelim('=')){
+         lex.eatDelim('=');
+         Expression newval = expression();
+         Predicate pred = new Predicate();
+         if (lex.matchKeyword("where")) {
+            lex.eatKeyword("where");
+            pred = predicate();
+         }
+         return new ModifyData(tblname, fldname, 0, newval, pred);
       }
-      return new ModifyData(tblname, fldname, newval, pred);
+      else if(lex.matchDelim('+')) {
+         lex.eatDelim('+');
+         if (lex.matchKeyword("node")){
+            List<Constant> nd = new ArrayList<Constant>();
+            lex.eatKeyword("node");
+            lex.eatDelim('(');
+            nd.addAll(constList(';'));
+            lex.eatDelim(')');
+            Predicate pred = new Predicate();
+            if (lex.matchKeyword("where")) {
+               lex.eatKeyword("where");
+               pred = predicate();
+            }
+            return new ModifyData(tblname, fldname, 1, true, nd, pred);
+         }
+
+         else {
+            List<Constant> nd1 = new ArrayList<Constant>();
+            List<Constant> nd2 = new ArrayList<Constant>();
+            List<Constant> length = new ArrayList<Constant>();
+            lex.eatKeyword("edge");
+            lex.eatDelim('(');
+            nd1.add(constant());
+            lex.eatDelim('-');
+            lex.eatDelim('>');
+            nd2.add(constant());
+            lex.eatDelim(',');
+            length.add(constant());
+            while(lex.matchDelim(';')){
+               lex.eatDelim(';');
+               nd1.add(constant());
+               lex.eatDelim('-');
+               lex.eatDelim('>');
+               nd2.add(constant());
+               lex.eatDelim(',');
+               length.add(constant());
+            }
+            lex.eatDelim(')');
+            Predicate pred = new Predicate();
+            if (lex.matchKeyword("where")) {
+               lex.eatKeyword("where");
+               pred = predicate();
+            }
+            return new ModifyData(tblname, fldname, 1, false, nd1, nd2, length, pred);
+         }
+      }
+
+      else {
+         lex.eatDelim('-');
+         if (lex.matchKeyword("node")){
+            List<Constant> nd = new ArrayList<Constant>();
+            lex.eatKeyword("node");
+            lex.eatDelim('(');
+            nd.addAll(constList(';'));
+            lex.eatDelim(')');
+            Predicate pred = new Predicate();
+            if (lex.matchKeyword("where")) {
+               lex.eatKeyword("where");
+               pred = predicate();
+            }
+            return new ModifyData(tblname, fldname, 2, true, nd, pred);
+         }
+
+         else {
+            List<Constant> nd1 = new ArrayList<Constant>();
+            List<Constant> nd2 = new ArrayList<Constant>();
+//            List<Constant> length = new ArrayList<Constant>();
+            lex.eatKeyword("edge");
+            lex.eatDelim('(');
+            nd1.add(constant());
+            lex.eatDelim('-');
+            lex.eatDelim('>');
+            nd2.add(constant());
+//            lex.eatDelim(',');
+//            length.add(constant());
+            while(lex.matchDelim(';')){
+               lex.eatDelim(';');
+               nd1.add(constant());
+               lex.eatDelim('-');
+               lex.eatDelim('>');
+               nd2.add(constant());
+//               lex.eatDelim(',');
+//               length.add(constant());
+            }
+            lex.eatDelim(')');
+            Predicate pred = new Predicate();
+            if (lex.matchKeyword("where")) {
+               lex.eatKeyword("where");
+               pred = predicate();
+            }
+            return new ModifyData(tblname, fldname, 2, false, nd1, nd2, pred);
+         }
+      }
    }
    
 // Method for parsing create table commands

@@ -1,6 +1,7 @@
 package simpledb.parse;
 
 import simpledb.query.*;
+import java.util.*;
 
 /**
  * Data for the SQL <i>update</i> statement.
@@ -11,17 +12,55 @@ public class ModifyData {
    private String fldname;
    private Expression newval;
    private Predicate pred;
+   private int operation; //0:=; 1:+; 2:-;
+   private boolean isNode;
+   private List<Constant> nd;
+   private List<Constant> nd1;
+   private List<Constant> nd2;
+   private List<Constant> length;
    
    /**
     * Saves the table name, the modified field and its new value, and the predicate.
     */
-   public ModifyData(String tblname, String fldname, Expression newval, Predicate pred) {
+   public ModifyData(String tblname, String fldname, int operation, Expression newval, Predicate pred) {
       this.tblname = tblname;
       this.fldname = fldname;
+      this.operation =operation;
       this.newval = newval;
       this.pred = pred;
    }
-   
+
+   public ModifyData(String tblname, String fldname, int operation, boolean isNode, List<Constant> nd, Predicate pred) {
+      this.tblname = tblname;
+      this.fldname = fldname;
+      this.operation = operation;
+      this.isNode = isNode;
+      this.nd = nd;
+      this.pred = pred;
+   }
+
+   public ModifyData(String tblname, String fldname, int operation, boolean isNode,
+                     List<Constant> nd1, List<Constant> nd2, List<Constant> length, Predicate pred) {
+      this.tblname = tblname;
+      this.fldname = fldname;
+      this.operation = operation;
+      this.isNode = isNode;
+      this.nd1 = nd1;
+      this.nd2 = nd2;
+      this.length = length;
+      this.pred = pred;
+   }
+
+   public ModifyData(String tblname, String fldname, int operation, boolean isNode,
+                     List<Constant> nd1, List<Constant> nd2, Predicate pred) {
+      this.tblname = tblname;
+      this.fldname = fldname;
+      this.operation = operation;
+      this.isNode = isNode;
+      this.nd1 = nd1;
+      this.nd2 = nd2;
+      this.pred = pred;
+   }
    /**
     * Returns the name of the affected table.
     * @return the name of the affected table
@@ -56,4 +95,11 @@ public class ModifyData {
    public Predicate pred() {
       return pred;
    }
+
+   public int getOperation() { return operation;}
+   public boolean getisNode() { return isNode;}
+   public List<Constant> getNd() { return nd;}
+   public List<Constant> getNd1() { return nd1;}
+   public List<Constant> getNd2() { return nd2;}
+   public List<Constant> getLth() { return length;}
 }
