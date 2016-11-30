@@ -102,6 +102,15 @@ public class Schema {
    public boolean hasField(String fldname) {
       return fields().contains(fldname);
    }
+
+   public String hasGraph() {
+      for (String key : info.keySet()){
+         if (key.charAt(0) == '_'){
+            return key;
+         }
+      }
+      return "_";
+   }
    
    /**
     * Returns the type of the specified field, using the

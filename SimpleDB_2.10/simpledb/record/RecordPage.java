@@ -100,10 +100,10 @@ public class RecordPage {
                return n;
            }
        }
-        else {
+       else {
            int position = fieldpos(fldname);
            return tx.getString(blk, position);
-        }
+       }
    }
    
    /**

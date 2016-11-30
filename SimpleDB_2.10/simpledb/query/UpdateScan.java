@@ -43,6 +43,9 @@ public interface UpdateScan extends Scan {
     * @return the RID of the current record
     */
    public RID  getRid();
+
+
+   public String hasGraph();
    
    /**
     * Positions the scan so that the current record has

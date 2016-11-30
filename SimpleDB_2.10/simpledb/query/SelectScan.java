@@ -65,6 +65,11 @@ public class SelectScan implements UpdateScan {
    }
    
    // UpdateScan methods
+
+   public String hasGraph(){
+      UpdateScan us = (UpdateScan) s;
+      return us.hasGraph();
+   }
    
    public void setVal(String fldname, Constant val) {
       UpdateScan us = (UpdateScan) s;

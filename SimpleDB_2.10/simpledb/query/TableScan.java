@@ -68,6 +68,8 @@ public class TableScan implements UpdateScan {
    }
    
    // UpdateScan methods
+
+   public String hasGraph() {return sch.hasGraph();}
    
    /**
     * Sets the value of the specified field, as a Constant.
