@@ -73,7 +73,7 @@ public class RecordPage {
    public String getString(String fldname) {
        String[] parts = fldname.split("-");
        String gname = parts[0];
-       System.out.println(gname);
+       //System.out.println(gname);
        int position = fieldpos(gname);
        String s = tx.getString(blk, position);
        if(fldname.contains("-")) {
@@ -82,26 +82,34 @@ public class RecordPage {
            conn = d.connect("jdbc:simpledb://localhost", null);
            Statement stmt = conn.createStatement();
            */
-           System.out.println("76");
-           System.out.println(fldname);
-           System.out.println(gname);
-           System.out.println("simpledb client booted");
-           System.out.println("10");
+           try {
+               Connection conn = null;
+               Driver d = new SimpleDriver();
+               conn = d.connect("jdbc:simpledb://localhost", null);
+               Statement stmt = conn.createStatement();
 
-           Connection conn = null;
-           Driver d = new SimpleDriver();
-           conn = d.connect("jdbc:simpledb://localhost", null);
-           Statement stmt = conn.createStatement();
-
-           catch(SQLException e) {
-               e.printStackTrace();
-           }
-           if(fldname.contains("-shortestPath")) {
-               //get shortest path goes here
-               return s;
-           }
-           else if(fldname.contains("-nodeCount")) {
-               //stmt.executeQuery(qry);
+               if (fldname.contains("-shortestpath")) {
+                   //get shortest path goes here
+                   return s;
+               } else if (fldname.contains("-nodecount")) {
+                   //stmt.executeQuery(qry);
+                   int count = 0;
+                   try {
+                       String qry = "select nname from table2 where gname = " + "'" + s + "'";
+                       System.out.println(qry);
+                       ResultSet rs = stmt.executeQuery(qry);
+                       ResultSetMetaData rsmd = rs.getMetaData();
+                       int columnsNumber = rsmd.getColumnCount();
+                       // Step 3: loop through the result set
+                       while (rs.next()) {
+                           count++;
+                       }
+                   } catch (SQLException e) {
+                       e.printStackTrace();
+                   }
+                   return Integer.toString(count);
+               } else if (fldname.contains("-node")) {
+               /*
                try {
                    String qry = "select nname from table2 where gname = " + "'" + s + "'";
 
@@ -109,6 +117,7 @@ public class RecordPage {
                    ResultSetMetaData rsmd = rs.getMetaData();
                    int columnsNumber = rsmd.getColumnCount();
                    // Step 3: loop through the result set
+                   int count = 0;
                    while (rs.next()) {
                        for (int i = 1; i <= columnsNumber; i++) {
                            int currType = rsmd.getColumnType(i);
@@ -126,21 +135,19 @@ public class RecordPage {
                }
                catch(SQLException e) {
                    e.printStackTrace();
+               }*/
+                   return s;
+               } else {
+                   return s;
                }
-               return s;
            }
-           else if(fldname.contains("-node")) {
-               return s;
+           catch(SQLException e) {
+               e.printStackTrace();
            }
-           else if(fldname.contains("-name"))  {
-               return s;
-           }
-           else {
-               return s;
-           }
+           return "";
        }
        else {
-           return tx.getString(blk, position);
+           return s;
        }
    }
    

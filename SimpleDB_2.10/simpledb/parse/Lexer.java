@@ -16,8 +16,9 @@ public class Lexer {
     * @param s the SQL statement
     */
    public Lexer(String s) {
-      System.out.println("155");
+      //System.out.println("155");
       initKeywords();
+
        /*
        tok = new StreamTokenizer(new StringReader(s));
        tok.wordChars('.', '.');
@@ -153,11 +154,6 @@ public class Lexer {
     * @param w the keyword string
     */
    public void eatKeyword(String w) {
-      System.out.println("155");
-      if(w == null) {
-         System.out.println("null");
-      }
-      System.out.println(w);
       if (!matchKeyword(w))
          throw new BadSyntaxException();
       nextToken();
