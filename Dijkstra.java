@@ -7,7 +7,7 @@ import java.lang.*;
 
 public class Dijkstra {
 
-    public static List<String> shortestPath (ArrayList<String> strList, String s, String e) {
+    public static ArrayList<String> shortestPath (ArrayList<String> strList, String s, String e) {
         int n = strList.size();
         String[] sourceLoc = new String[n];
         String[] destLoc = new String[n];
@@ -26,26 +26,7 @@ public class Dijkstra {
         for (int i = 0; i < strList.size(); i++) {
             GRAPH[i] = new Graph.Edge(sourceLoc[i], destLoc[i], duration[i]);
         }
-        /*
-        Graph.Edge[] GRAPH = {
-            for (int i = 0; i < strList.size(); i++) {
-                //new Graph.Edge(sourceLoc[i], destLoc[i], duration[i]),
-                new Graph.Edge(sourceLoc[0], destLoc[0], duration[0]),
-                new Graph.Edge(sourceLoc[1], destLoc[1], duration[1]),
-                new Graph.Edge(sourceLoc[2], destLoc[2], duration[2]),
-                new Graph.Edge(sourceLoc[3], destLoc[3], duration[3]),
-                new Graph.Edge(sourceLoc[4], destLoc[4], duration[4]),
-                new Graph.Edge(sourceLoc[5], destLoc[5], duration[5]),
-                new Graph.Edge(sourceLoc[6], destLoc[6], duration[6]),
-                new Graph.Edge(sourceLoc[7], destLoc[7], duration[7]),
-                new Graph.Edge(sourceLoc[8], destLoc[8], duration[8]),
-                new Graph.Edge(sourceLoc[9], destLoc[9], duration[9]),
 
-                //new Graph.Edge(sourceLoc[10], destLoc[10], duration[10]),
-            }
-
-        };*/
-            //return Graph.Edge[];
 
         final String START = s;
         final String END = e;
@@ -70,21 +51,18 @@ public class Dijkstra {
         l.add("node6,node7;1");
         l.add("node7,node9;2");
 
-        String start = "node3";
-        String end = "node1";
+        String start = "node1";
+        String end = "node9";
 
-        List<String> s = shortestPath(l, start, end);
-
-        for(String str : s) {
-            System.out.println(str);
-        }
+        ArrayList<String> list = shortestPath(l, start, end);
+        System.out.println(list);
     }
 }
 
 class Graph {
     private final Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
 
-    private static List<String> res = new ArrayList<>();
+//    private List<String> res = new ArrayList<>();
 
     /** One edge of the graph (only used by Graph constructor) */
     public static class Edge {
@@ -109,27 +87,26 @@ class Graph {
             this.name = name;
         }
 
-        private String printPath()
+        private void printPath(ArrayList<String> record)
         {
             if (this == this.previous)
             {
-                System.out.printf("%s", this.name);
+                //System.out.printf("%s", this.name);
                 String nd = this.name+"#@";
-                return nd;
+                record.add(nd);
             }
             else if (this.previous == null)
             {
-                System.out.printf("%s(unreached)", this.name);
+                String s = this.name + "(unreached)";
+                record.add(s);
             }
             else
             {
-                this.previous.printPath();
-                System.out.printf(" -> %s(%d)", this.name, this.dist);
+                this.previous.printPath(record);
+
                 String nd = this.name+"#"+this.dist;
-                System.out.println();
-                return nd;
+                record.add(nd);
             }
-            return "";
         }
 
         public int compareTo(Vertex other)
@@ -206,24 +183,26 @@ class Graph {
     }
 
     /** Prints a path from the source to the specified vertex */
-    public List<String> printPath(String endName) {
+    public ArrayList<String> printPath(String endName) {
         if (!graph.containsKey(endName)) {
             System.err.printf("Graph doesn't contain end vertex \"%s\"\n", endName);
-            return res;
         }
 
-        String nd = graph.get(endName).printPath();
-        if(nd.length()>0){
-            res.add(nd);
-        }
-        System.out.println();
-        return res;
+
+//        String nd = graph.get(endName).printPath();
+//        if(nd.length()>0){
+//            res.add(nd);
+//        }
+//        System.out.println();
+        ArrayList<String> l = new ArrayList<String>();
+        graph.get(endName).printPath(l);
+        return l;
     }
     /** Prints the path from the source to every vertex (output order is not guaranteed) */
-    public void printAllPaths() {
+    /*public void printAllPaths() {
         for (Vertex v : graph.values()) {
             v.printPath();
             System.out.println();
         }
-    }
+    }*/
 }
