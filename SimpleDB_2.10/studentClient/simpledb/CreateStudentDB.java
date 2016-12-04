@@ -7,6 +7,7 @@ import java.util.*;
 public class CreateStudentDB {
     public static void main(String[] args) throws Exception{
         System.out.println("simpledb client booted");
+		System.out.println("10");
 		Connection conn = null;
 		try {
 			Driver d = new SimpleDriver();

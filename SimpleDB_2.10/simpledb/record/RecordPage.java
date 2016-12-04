@@ -2,7 +2,11 @@ package simpledb.record;
 
 import static simpledb.file.Page.*;
 import simpledb.file.Block;
+import simpledb.remote.SimpleDriver;
 import simpledb.tx.Transaction;
+
+import java.sql.*;
+import java.util.Scanner;
 
 /**
  * Manages the placement and access of records in a block.
@@ -67,41 +71,75 @@ public class RecordPage {
     * @return the string stored in that field
     */
    public String getString(String fldname) {
-       if(fldname.contains("()")) {
+       String[] parts = fldname.split("-");
+       String gname = parts[0];
+       System.out.println(gname);
+       int position = fieldpos(gname);
+       String s = tx.getString(blk, position);
+       if(fldname.contains("-")) {
            /*
-           Driver d = new SimpleDriver();
+           Driver d = new SimpleDriver();a
            conn = d.connect("jdbc:simpledb://localhost", null);
            Statement stmt = conn.createStatement();
            */
            System.out.println("76");
            System.out.println(fldname);
-           String gname = fldname.split("\\.")[0];
-           if(fldname.contains("- shortestPath")) {
+           System.out.println(gname);
+           System.out.println("simpledb client booted");
+           System.out.println("10");
+
+           Connection conn = null;
+           Driver d = new SimpleDriver();
+           conn = d.connect("jdbc:simpledb://localhost", null);
+           Statement stmt = conn.createStatement();
+
+           catch(SQLException e) {
+               e.printStackTrace();
+           }
+           if(fldname.contains("-shortestPath")) {
                //get shortest path goes here
-               String n = "001";
-               return n;
+               return s;
            }
            else if(fldname.contains("-nodeCount")) {
                //stmt.executeQuery(qry);
-               
-               String n = "002";
-               return n;
+               try {
+                   String qry = "select nname from table2 where gname = " + "'" + s + "'";
+
+                   ResultSet rs = stmt.executeQuery(qry);
+                   ResultSetMetaData rsmd = rs.getMetaData();
+                   int columnsNumber = rsmd.getColumnCount();
+                   // Step 3: loop through the result set
+                   while (rs.next()) {
+                       for (int i = 1; i <= columnsNumber; i++) {
+                           int currType = rsmd.getColumnType(i);
+                           if (i > 1) System.out.print(",  ");
+                           if (currType == 4) {
+                               int columnValue = rs.getInt(rsmd.getColumnName(i));
+                               System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                           } else if (currType == 12) {
+                               String columnValue = rs.getString(rsmd.getColumnName(i));
+                               System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                           }
+                       }
+                       System.out.println("");
+                   }
+               }
+               catch(SQLException e) {
+                   e.printStackTrace();
+               }
+               return s;
            }
            else if(fldname.contains("-node")) {
-               String n = "003";
-               return n;
+               return s;
            }
            else if(fldname.contains("-name"))  {
-               String n = "004";
-               return n;
+               return s;
            }
            else {
-               String n = "005";
-               return n;
+               return s;
            }
        }
        else {
-           int position = fieldpos(fldname);
            return tx.getString(blk, position);
        }
    }
