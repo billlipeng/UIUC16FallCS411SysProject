@@ -32,11 +32,11 @@ public class CreateStudentDB {
                                 if (i > 1) System.out.print(",  ");
                                 if(currType==4) {
                                     int columnValue = rs.getInt(rsmd.getColumnName(i));
-                                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                                    System.out.print(columnValue + " " + "(" + rsmd.getColumnName(i) + ")");
                                 }
                                 else if(currType==12) {
                                     String columnValue = rs.getString(rsmd.getColumnName(i));
-                                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                                    System.out.print(columnValue + " " + "(" + rsmd.getColumnName(i) + ")");
                                 }
                             }
                             System.out.println("");

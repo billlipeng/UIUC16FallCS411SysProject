@@ -4,7 +4,7 @@ import static simpledb.file.Page.*;
 import simpledb.file.Block;
 import simpledb.remote.SimpleDriver;
 import simpledb.tx.Transaction;
-
+import java.util.*;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -90,16 +90,54 @@ public class RecordPage {
 
                if (fldname.contains("-shortestpath")) {
                    //get shortest path goes here
-                   return s;
+                   ArrayList<String> l = new ArrayList<String>();
+                   String sss = "";
+                   try {
+                       String qry = "select n1, n2, length from table3 where gname = " + "'" + s + "'";
+                       ResultSet rs = stmt.executeQuery(qry);
+                       ResultSetMetaData rsmd = rs.getMetaData();
+                       // Step 3: loop through the result set
+                       int count = 0;
+                       while (rs.next()) {
+                           String n1 = rs.getString(rsmd.getColumnName(1));
+                           String n2 = rs.getString(rsmd.getColumnName(2));
+                           int length = rs.getInt(rsmd.getColumnName(1));
+                           String curr = n1 + "," + n2 + ";" + Integer.toString(length);
+                           l.add(curr);
+                           count++;
+                           //System.out.println(curr);
+                           //System.out.println(count);
+                       }
+                       String departureAndDestination = parts[1];
+                       //System.out.println(departureAndDestination);
+                       String ddparts[] = departureAndDestination.split(":");
+                       String departure = ddparts[1];
+                       String destination = ddparts[2];
+                       Dijkstra dj = new Dijkstra();
+                       List<String> result = dj.shortestPath(l, departure, destination);
+                       /*
+                       System.out.println(l);
+                       System.out.println(departure);
+                       System.out.println(destination);*/
+                       int c = 0;
+                       for(String str : result) {
+                           sss += str;
+                           c++;
+                       }
+                       sss += " ";
+                       sss += Integer.toString(c);
+                   }
+                   catch(SQLException e) {
+                       e.printStackTrace();
+                   }
+                   return sss;
                } else if (fldname.contains("-nodecount")) {
                    //stmt.executeQuery(qry);
                    int count = 0;
                    try {
                        String qry = "select nname from table2 where gname = " + "'" + s + "'";
-                       System.out.println(qry);
                        ResultSet rs = stmt.executeQuery(qry);
                        ResultSetMetaData rsmd = rs.getMetaData();
-                       int columnsNumber = rsmd.getColumnCount();
                        // Step 3: loop through the result set
                        while (rs.next()) {
                            count++;
@@ -109,34 +147,26 @@ public class RecordPage {
                    }
                    return Integer.toString(count);
                } else if (fldname.contains("-node")) {
-               /*
-               try {
-                   String qry = "select nname from table2 where gname = " + "'" + s + "'";
-
-                   ResultSet rs = stmt.executeQuery(qry);
-                   ResultSetMetaData rsmd = rs.getMetaData();
-                   int columnsNumber = rsmd.getColumnCount();
-                   // Step 3: loop through the result set
-                   int count = 0;
-                   while (rs.next()) {
-                       for (int i = 1; i <= columnsNumber; i++) {
-                           int currType = rsmd.getColumnType(i);
-                           if (i > 1) System.out.print(",  ");
-                           if (currType == 4) {
-                               int columnValue = rs.getInt(rsmd.getColumnName(i));
-                               System.out.print(columnValue + " " + rsmd.getColumnName(i));
-                           } else if (currType == 12) {
-                               String columnValue = rs.getString(rsmd.getColumnName(i));
-                               System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                   String rt = "";
+                   try {
+                       String qry = "select nname from table2 where gname = " + "'" + s + "'";
+                       ResultSet rs = stmt.executeQuery(qry);
+                       ResultSetMetaData rsmd = rs.getMetaData();
+                       // Step 3: loop through the result set
+                       int count = 0;
+                       while (rs.next()) {
+                           String columnValue = rs.getString(rsmd.getColumnName(1));
+                           if (count != 0) {
+                               rt += ", ";
                            }
+                           rt += columnValue;
+                           count++;
                        }
-                       System.out.println("");
                    }
-               }
-               catch(SQLException e) {
-                   e.printStackTrace();
-               }*/
-                   return s;
+                   catch(SQLException e) {
+                       e.printStackTrace();
+                   }
+                   return rt;
                } else {
                    return s;
                }

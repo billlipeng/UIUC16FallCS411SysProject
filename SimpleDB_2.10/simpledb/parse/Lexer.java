@@ -46,6 +46,7 @@ public class Lexer {
       tok.ordinaryChar(')');
         */
       tok.wordChars('-', '-');
+      tok.wordChars(':', ':');
       //tok.wordChars('(', '(');
       //tok.wordChars(')', ')');
       tok.lowerCaseMode(true); //ids and keywords are converted
