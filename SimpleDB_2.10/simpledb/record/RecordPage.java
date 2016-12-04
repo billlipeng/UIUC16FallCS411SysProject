@@ -98,9 +98,29 @@ public class RecordPage {
                        ResultSetMetaData rsmd = rs.getMetaData();
                        // Step 3: loop through the result set
                        int count = 0;
+                       boolean departureFind = false;
+                       boolean destinationFind = false;
+                       String departureAndDestination = parts[1];
+                       //System.out.println(departureAndDestination);
+                       String ddparts[] = departureAndDestination.split(":");
+                       String departure = ddparts[1];
+                       String destination = ddparts[2];
                        while (rs.next()) {
                            String n1 = rs.getString(rsmd.getColumnName(1));
                            String n2 = rs.getString(rsmd.getColumnName(2));
+                           if(n1.equals(departure)) {
+                                departureFind = true;
+                           }
+                           if(n1.equals(destination)) {
+                               destinationFind = true;
+                           }
+                           if(n2.equals(departure)) {
+                               departureFind = true;
+                           }
+                           if(n2.equals(destination)) {
+                               destinationFind = true;
+                           }
+                           System.out.println(n1 + " " + n2);
                            int length = rs.getInt(rsmd.getColumnName(1));
                            String curr = n1 + "," + n2 + ";" + Integer.toString(length);
                            l.add(curr);
@@ -108,24 +128,25 @@ public class RecordPage {
                            //System.out.println(curr);
                            //System.out.println(count);
                        }
-                       String departureAndDestination = parts[1];
-                       //System.out.println(departureAndDestination);
-                       String ddparts[] = departureAndDestination.split(":");
-                       String departure = ddparts[1];
-                       String destination = ddparts[2];
-                       Dijkstra dj = new Dijkstra();
-                       List<String> result = dj.shortestPath(l, departure, destination);
+                       if(departureFind != true || destinationFind != true) {
+                           sss = "no node";
+                       }
+                       else {
+                           Dijkstra dj = new Dijkstra();
+
+                           List<String> result = dj.shortestPath(l, departure, destination);
                        /*
                        System.out.println(l);
                        System.out.println(departure);
                        System.out.println(destination);*/
-                       int c = 0;
-                       for(String str : result) {
-                           sss += str;
-                           c++;
+                           int c = 0;
+                           for (String str : result) {
+                               sss += str;
+                               c++;
+                           }
+                           sss += " ";
+                           sss += Integer.toString(c);
                        }
-                       sss += " ";
-                       sss += Integer.toString(c);
                    }
                    catch(SQLException e) {
                        e.printStackTrace();
