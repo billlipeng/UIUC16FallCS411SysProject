@@ -25,7 +25,7 @@ public class ModifyData {
    public ModifyData(String tblname, String fldname, int operation, Expression newval, Predicate pred) {
       this.tblname = tblname;
       this.fldname = fldname;
-      this.operation =operation;
+      this.operation = operation;
       this.newval = newval;
       this.pred = pred;
    }
@@ -49,6 +49,7 @@ public class ModifyData {
       this.nd2 = nd2;
       this.length = length;
       this.pred = pred;
+       System.out.println(tblname + " " + fldname + " " + operation);
    }
 
    public ModifyData(String tblname, String fldname, int operation, boolean isNode,

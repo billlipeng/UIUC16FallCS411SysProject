@@ -43,7 +43,7 @@ public class ConcurrencyMgr {
    public void xLock(Block blk) {
       if (!hasXLock(blk)) {
          sLock(blk);
-         locktbl.xLock(blk);
+         //locktbl.xLock(blk);
          locks.put(blk, "X");
       }
    }

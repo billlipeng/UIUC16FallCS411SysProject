@@ -123,7 +123,12 @@ public class Schema {
            return 12;
        }
        else {
-           return info.get(fldname).type;
+           FieldInfo tmp = info.get(fldname);
+           if(tmp == null) {
+               String gFldname = "_GRAPH_" + fldname;
+               return info.get(gFldname).type;
+           }
+           return tmp.type;
        }
    }
    
@@ -138,7 +143,14 @@ public class Schema {
       if(fldname.contains("-")) {
           return 16;
       }
-      return info.get(fldname).length;
+      else {
+          FieldInfo tmp = info.get(fldname);
+          if(tmp == null) {
+              String gFldname = "_GRAPH_" + fldname;
+              return info.get(gFldname).length;
+          }
+          return tmp.length;
+      }
    }
    
    class FieldInfo {

@@ -59,8 +59,8 @@ class LockTable {
          long timestamp = System.currentTimeMillis();
          while (hasOtherSLocks(blk) && !waitingTooLong(timestamp))
             wait(MAX_TIME);
-         if (hasOtherSLocks(blk))
-            throw new LockAbortException();
+         //if (hasOtherSLocks(blk))
+            //throw new LockAbortException();
          locks.put(blk, -1);
       }
       catch(InterruptedException e) {

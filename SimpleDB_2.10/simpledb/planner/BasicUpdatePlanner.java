@@ -31,6 +31,7 @@ public class BasicUpdatePlanner implements UpdatePlanner {
                 s = "delete from table3 where gname = '"+gname+"'";
                 par=new Parser(s);
                 executeDelete(par.delete(), tx);
+                System.out.println("delete finished");
                 us.delete();
                 count++;
             }
@@ -43,6 +44,7 @@ public class BasicUpdatePlanner implements UpdatePlanner {
                 count++;
             }
             us.close();
+            System.out.println("delete finished");
             return count;
         }
     }

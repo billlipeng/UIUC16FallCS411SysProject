@@ -75,7 +75,11 @@ public class TableInfo {
     * @return the offset of that field within a record
     */
    public int offset(String fldname) {
-      return offsets.get(fldname);
+       if(offsets.get(fldname) == null) {
+           String gFldname = "_GRAPH_" + fldname;
+           return offsets.get(gFldname);
+       }
+       return offsets.get(fldname);
    }
    
    /**

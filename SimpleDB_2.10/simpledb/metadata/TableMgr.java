@@ -34,25 +34,25 @@ public class TableMgr {
       tcatSchema.addStringField("tblname", MAX_NAME);
       tcatSchema.addIntField("reclength");
       tcatInfo = new TableInfo("tblcat", tcatSchema);
-  
+       /*
       Schema graphSchema = new Schema();
       graphSchema.addIntField("GId");
       graphSchema.addStringField("GName", MAX_NAME);
       graphSchema.addIntField("NCount");
       graphSchema.addIntField("ECount");
       graphInfo = new TableInfo("graphcat", graphSchema);
-  
+       */
       Schema nodeSchema = new Schema();
-      nodeSchema.addStringField("GName", MAX_NAME);
-      nodeSchema.addStringField("NName", MAX_NAME);
-      nodeInfo = new TableInfo("nodecat", nodeSchema);
-       
+      nodeSchema.addStringField("gname", MAX_NAME);
+      nodeSchema.addStringField("nname", MAX_NAME);
+      nodeInfo = new TableInfo("table2", nodeSchema);
+      
       Schema edgeSchema = new Schema();
-      edgeSchema.addStringField("GName", MAX_NAME);
-      edgeSchema.addStringField("N1", MAX_NAME);
-      edgeSchema.addStringField("N2", MAX_NAME);
-      edgeSchema.addIntField("Length");
-      edgeInfo = new TableInfo("edgecat", edgeSchema);
+      edgeSchema.addStringField("gname", MAX_NAME);
+      edgeSchema.addStringField("n1", MAX_NAME);
+      edgeSchema.addStringField("n2", MAX_NAME);
+      edgeSchema.addIntField("length");
+      edgeInfo = new TableInfo("table3", edgeSchema);
   
       Schema fcatSchema = new Schema();
       fcatSchema.addStringField("tblname", MAX_NAME);
@@ -65,7 +65,7 @@ public class TableMgr {
       if (isNew) {
          createTable("tblcat", tcatSchema, tx);
          createTable("fldcat", fcatSchema, tx);
-         createTable("table1", graphSchema, tx);
+         //createTable("table1", graphSchema, tx);
          createTable("table2", nodeSchema, tx);
          createTable("table3", edgeSchema, tx);
       }
